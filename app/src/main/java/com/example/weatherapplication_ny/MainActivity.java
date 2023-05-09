@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity implements MyWeatherTaskList
     private ActivityMainBinding binding;
 
     //Web URL of the JSON file
-    private String mApiKey = "34144c3cbc32dd09ea134d41ac886c9b";
-    private String mCity = "London";
-    private String mCountry = "United Kingdom";
+    private String mApiKey = "3786b2385721e59b7bb961335fa2f5a2";
+    private String mCity = "New York";
+    private String mCountry = "United States";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity implements MyWeatherTaskList
         View view = binding.getRoot();
         setContentView(view);
 
-        //http://api.openweathermap.org/data/2.5/weather?q=cityLinks to an external site.,country&APPID={your api key};
-        String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=Links to an external site." + mCity + "," + mCountry + "&APPID=" + mApiKey;
+        //http://api.openweathermap.org/data/2.5/weather?q=city,country&
+        // APPID={your api key};
+        String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + mCity + "," + mCountry + "&appid=" + mApiKey;
+        //http://api.openweathermap.org/data/2.5/weather?q=New York,United States&appid=34144c3cbc32dd09ea134d41ac886c9b
         new MyWeatherTask(this).execute(weatherURL);
     }
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MyWeatherTaskList
             String tempStr = String.valueOf(temp);
             binding.temperatureTextView.setText(tempStr);
 
-            String imgUrl = "http://openweathermap.org/img/wn/Links to an external site." + myWeather.getWeatherIconStr() + "@2x.png";
+            String imgUrl = "http://openweathermap.org/img/wn/" + myWeather.getWeatherIconStr() + "@2x.png";
 
             Glide.with(MainActivity.this)
                     .asBitmap()

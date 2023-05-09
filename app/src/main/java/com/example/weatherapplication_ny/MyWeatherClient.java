@@ -5,53 +5,59 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MyWeatherClient {
-    public static String fetchWeather(String pUrl) {
+public class MyWeatherClient
+{
+    public static String fetchWeather(String jsonURL)
+    {
         String jsonStr = null;
-        HttpURLConnection httpURLConnection = null;
+
+        HttpURLConnection urlConnection = null;
         BufferedReader bufferedReader = null;
 
-        try {
-            URL url = new URL(pUrl);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.connect();
-            InputStream inputStream = httpURLConnection.getInputStream();
+        try
+        {
+            //---Loading JSON from the Web URL---//
+            URL url = new URL(jsonURL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+
+            InputStream inputStream = urlConnection.getInputStream();
+
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
             StringBuilder stringBuilder = new StringBuilder();
+
             String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null)
+            {
                 stringBuilder.append(line).append("\n");
             }
-
-            if (stringBuilder.length() != 0) {
-                jsonStr = stringBuilder.toString();
+            if (stringBuilder.length() != 0)
+            {
+                jsonStr= stringBuilder.toString();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (httpURLConnection != null) {
-                httpURLConnection.disconnect();
+        } catch (IOException ignored)
+        {
+        } finally
+        {
+            if (urlConnection != null)
+            {
+                urlConnection.disconnect();
             }
             if (bufferedReader != null)
             {
                 try
                 {
                     bufferedReader.close();
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     e.printStackTrace();
                 }
-
             }
         }
-
         return jsonStr;
     }
 }
